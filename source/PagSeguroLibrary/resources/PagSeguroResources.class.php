@@ -46,12 +46,10 @@ class PagSeguroResources
         require_once PagSeguroLibrary::getPath() . DIRECTORY_SEPARATOR . "resources" . DIRECTORY_SEPARATOR .
             "PagSeguroResources.php";
         $varName = self::VAR_NAME;
-        if (isset($$varName)) {
-            self::$data = $$varName;
-            unset($$varName);
-        } else {
-            throw new Exception("Resources is undefined.");
-        }
+        if (!isset($$varName)) throw new Exception("Resources is undefined.");
+            
+        self::$data = $$varName;
+        unset($$varName);
     }
 
     /**
@@ -59,9 +57,7 @@ class PagSeguroResources
      */
     public static function init()
     {
-        if (self::$resources == null) {
-            self::$resources = new PagSeguroResources();
-        }
+        if (self::$resources == null) self::$resources = new PagSeguroResources();
         return self::$resources;
     }
 
@@ -74,17 +70,11 @@ class PagSeguroResources
     public static function getData($key1, $key2 = null)
     {
         if ($key2 != null) {
-            if (isset(self::$data[$key1][$key2])) {
-                return self::$data[$key1][$key2];
-            } else {
-                throw new Exception("Resources keys {$key1}, {$key2} not found.");
-            }
+            if (!isset(self::$data[$key1][$key2])) throw new Exception("Resources keys {$key1}, {$key2} not found.");
+            return self::$data[$key1][$key2];
         } else {
-            if (isset(self::$data[$key1])) {
-                return self::$data[$key1];
-            } else {
-                throw new Exception("Resources key {$key1} not found.");
-            }
+            if (!isset(self::$data[$key1])) throw new Exception("Resources key {$key1} not found.");
+            return self::$data[$key1];
         }
     }
 
@@ -96,11 +86,8 @@ class PagSeguroResources
      */
     public static function setData($key1, $key2, $value)
     {
-        if (isset(self::$data[$key1][$key2])) {
-            self::$data[$key1][$key2] = $value;
-        } else {
-            throw new Exception("Resources keys {$key1}, {$key2} not found.");
-        }
+        if (!isset(self::$data[$key1][$key2])) throw new Exception("Resources keys {$key1}, {$key2} not found.");
+        self::$data[$key1][$key2] = $value;
     }
 
     /**
